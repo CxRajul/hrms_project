@@ -65,3 +65,4 @@ $payrollSummary = $payrollQuery->fetch_assoc();
         <a href="<?php echo BASE_URL; ?>/views/dashboard.php">Back to Dashboard</a>
     </div>
 <?php include('../include/footer.php'); ?>
+ 
