@@ -19,7 +19,7 @@ if (isset($_SESSION['user_id'])) {
         <?php if (isset($_GET['error'])) { ?>
             <p style="color: red;"><?php echo htmlspecialchars($_GET['error']); ?></p>
         <?php } ?>
-        <form action="/hrms_project/controllers/authController.php" method="POST">
+        <form action="/hrms_project/controllers/AuthController.php" method="POST">
             <input type="hidden" name="action" value="login">
             <label>Email:</label>
             <input type="email" name="email" required>

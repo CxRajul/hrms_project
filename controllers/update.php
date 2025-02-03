@@ -11,9 +11,7 @@ if ($db->connect_error) {
 $users = [
     ['admin@example.com', 'admin123'],
     ['hr@example.com', 'hr123'],
-    ['john@example.com', 'employee123'],
-    ['jane@example.com', 'employee123'],
-    ['robert@example.com', 'employee123']
+    ['john@example.com', 'employee123']
 ];
 
 foreach ($users as $user) {

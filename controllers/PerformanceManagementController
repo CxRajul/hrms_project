@@ -1,0 +1,58 @@
+<?php
+    // controllers/PerformanceManagementController.php - Handles Performance Management (OKRs & KPIs)
+    require_once '../config/config.php';
+    session_start();
+
+    class PerformanceManagementController {
+        private $conn;
+
+        public function __construct($db) {
+            $this->conn = $db;
+        }
+
+        // Add a new performance goal (OKR)
+        public function addPerformanceGoal($employee_id, $goal_name, $description, $target_date, $status) {
+            $stmt = $this->conn->prepare("INSERT INTO performance_goals (employee_id, goal_name, description, target_date, status) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("issss", $employee_id, $goal_name, $description, $target_date, $status);
+            return $stmt->execute();
+        }
+
+        // Fetch all performance goals for an employee
+        public function getPerformanceGoals($employee_id) {
+            $stmt = $this->conn->prepare("SELECT * FROM performance_goals WHERE employee_id = ?");
+            $stmt->bind_param("i", $employee_id);
+            $stmt->execute();
+            return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        }
+
+        // Update a performance goal
+        public function updatePerformanceGoal($id, $goal_name, $description, $target_date, $status) {
+            $stmt = $this->conn->prepare("UPDATE performance_goals SET goal_name = ?, description = ?, target_date = ?, status = ? WHERE id = ?");
+            $stmt->bind_param("ssssi", $goal_name, $description, $target_date, $status, $id);
+            return $stmt->execute();
+        }
+
+        // Delete a performance goal
+        public function deletePerformanceGoal($id) {
+            $stmt = $this->conn->prepare("DELETE FROM performance_goals WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            return $stmt->execute();
+        }
+
+        // Fetch KPI Tracking Data
+        public function getKPIs($employee_id) {
+            $stmt = $this->conn->prepare("SELECT * FROM employee_kpis WHERE employee_id = ?");
+            $stmt->bind_param("i", $employee_id);
+            $stmt->execute();
+            return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        }
+    }
+
+    // Database Connection
+    $db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    if ($db->connect_error) {
+        die("Connection failed: " . $db->connect_error);
+    }
+
+    $performanceController = new PerformanceManagementController($db);
+?>
